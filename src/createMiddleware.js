@@ -62,7 +62,9 @@ function handleWhitelist(action, actionWhitelist) {
     return actionWhitelist(action);
 }
 
-export default (engine, actionBlacklist = [], actionWhitelist = []) => {
+export default (engine, actionBlacklist = [], actionWhitelist = [], options = {}) => {
+    const opts = Object.assign({ disableDispatchSaveAction: false }, options);
+
     // Also don't save if we process our own actions
     const blacklistedActions = [...actionBlacklist, LOAD, SAVE];
 
@@ -94,7 +96,13 @@ export default (engine, actionBlacklist = [], actionWhitelist = []) => {
                 }
 
                 const dispatchSave = () => dispatch(saveAction);
-                engine.save(saveState).then(dispatchSave).catch(swallow);
+                engine.save(saveState)
+                    .then(() => {
+                        if (opts.disableDispatchSaveAction === false) {
+                            return dispatchSave();
+                        }
+                    })
+                    .catch(swallow);
             }
 
             return result;

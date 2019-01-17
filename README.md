@@ -156,6 +156,17 @@ import { SHOULD_SAVE } from './constants';
 const middleware = createMiddleware(engine, [], [ SHOULD_SAVE ]);
 ```
 
+If you want to skip dispatching a redux action everytime something gets saved,
+just specify it to the option object, which is the fourth argument.
+
+```js
+import { createMiddleware } from 'redux-storage'
+
+import { SHOULD_SAVE } from './constants';
+
+const middleware = createMiddleware(engine, [], [], { disableDispatchSaveAction: true });
+```
+
 # A fork of [redux-storage](https://github.com/michaelcontento/redux-storage)
 
 The original author of the package [redux-storage](https://github.com/michaelcontento/redux-storage) has decided to deprecate the project and no longer maintained. The package will now be maintained here.
