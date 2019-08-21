@@ -1,6 +1,9 @@
-This repo take from react-stack/redux-storage, but plus debounce time for performance boost using RxJS
-When call createMiddleware with options { debounce: 500 } for 500ms delay
-see https://rxjs-dev.firebaseapp.com/api/operators/debounceTime for detail
+This repo take from react-stack/redux-storage, but plus debounce time for performance boost using RxJS,
+when call createMiddleware with options { debounce: 500 } for 500ms delay,
+see https://rxjs-dev.firebaseapp.com/api/operators/debounceTime for more info.
+```js
+const middleware = storage.createMiddleware(engine, [], [], { debounce: 500 });
+```
 
 # [redux-storage][]
 
@@ -40,7 +43,7 @@ Save and load the [Redux][] state with ease.
 
 ## Installation
 
-    npm install --save redux-storage
+    npm install --save @tuofeng/redux-storage
 
 And you need to install at least one [redux-storage-engine][npm-engine], as
 [redux-storage][] is only the *"management core"*.
@@ -48,7 +51,7 @@ And you need to install at least one [redux-storage-engine][npm-engine], as
 ## Usage
 
 ```js
-import * as storage from 'redux-storage'
+import * as storage from '@tuofeng/redux-storage'
 
 // Import redux and all your reducers as usual
 import { createStore, applyMiddleware, combineReducers } from 'redux';
@@ -119,7 +122,7 @@ You can use this, for example, to display a loading screen until the old state
 has been restored like this:
 
 ```js
-import { LOAD, SAVE } from 'redux-storage';
+import { LOAD, SAVE } from '@tuofeng/redux-storage';
 
 function storeageAwareReducer(state = { loaded: false }, action) {
     switch (action.type) {
@@ -142,7 +145,7 @@ those will be added to a internal blacklist and won't trigger calls to
 `engine.save`.
 
 ```js
-import { createMiddleware } from 'redux-storage'
+import { createMiddleware } from '@tuofeng/redux-storage'
 
 import { APP_START } from './constants';
 
@@ -153,7 +156,7 @@ If you want to whitelist all actions that are allowed to issue a `engine.save`,
 just specify them as third argument.
 
 ```js
-import { createMiddleware } from 'redux-storage'
+import { createMiddleware } from '@tuofeng/redux-storage'
 
 import { SHOULD_SAVE } from './constants';
 
@@ -164,7 +167,7 @@ If you want to skip dispatching a redux action everytime something gets saved,
 just specify it to the option object, which is the fourth argument.
 
 ```js
-import { createMiddleware } from 'redux-storage'
+import { createMiddleware } from '@tuofeng/redux-storage'
 
 import { SHOULD_SAVE } from './constants';
 
