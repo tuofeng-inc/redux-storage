@@ -1,7 +1,7 @@
 {
-  "name": "redux-storage",
+  "name": "@tuofeng/redux-storage",
   "version": "4.1.2",
-  "description": "Persistence layer for redux with flexible backends",
+  "description": "Persistence layer for redux with flexible backends & debounce time bt RxJS for performance",
   "main": "build/index.js",
   "jsnext:main": "build-es/index.js",
   "scripts": {
@@ -9,10 +9,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-stack/redux-storage.git"
+    "url": "https://github.com/tuofeng-inc/redux-storage.git"
   },
-  "bugs": "https://github.com/react-stack/redux-storage/issues",
-  "homepage": "https://github.com/react-stack/redux-storage",
+  "bugs": "https://github.com/tuofeng-inc/redux-storage/issues",
+  "homepage": "https://github.com/tuofeng-inc/redux-storage",
   "keywords": [
     "redux",
     "redux-middleware",
@@ -24,10 +24,7 @@
     "data",
     "localstorage"
   ],
-  "author": [
-    "Michael Contento <mail@michaelcontento.de>",
-    "Guns <gunjan.soni2002@gmail.com>"
-  ],
+  "author": "iwater <iwater@gmail.com>",
   "files": [
     "build/",
     "build-es/",
@@ -55,7 +52,9 @@
     "lodash.isobject": "^3.0.2",
     "loose-envify": "^1.2.0",
     "redux-actions": "^0.10.1",
-    "redux-storage-merger-simple": "^1.0.2"
+    "redux-storage-merger-simple": "^1.0.2",
+    "rxjs": "^6.5.2",
+    "events": "^3.0.0"
   },
   "peerDependencies": {
     "redux": "^4.0.0 || ^3.0.0 || ^2.0.0 || ^1.0.0 || 1.0.0-alpha || 1.0.0-rc"

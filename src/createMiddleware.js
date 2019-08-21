@@ -1,5 +1,8 @@
 import isFunction from 'lodash.isfunction';
 import isObject from 'lodash.isobject';
+import { fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import EventEmitter from 'events';
 
 import { save as actionSave } from './actions';
 import { LOAD, SAVE } from './constants';
@@ -63,7 +66,7 @@ function handleWhitelist(action, actionWhitelist) {
 }
 
 export default (engine, actionBlacklist = [], actionWhitelist = [], options = {}) => {
-    const opts = Object.assign({ disableDispatchSaveAction: false }, options);
+    const opts = Object.assign({ disableDispatchSaveAction: false, debounce: 0 }, options);
 
     // Also don't save if we process our own actions
     const blacklistedActions = [...actionBlacklist, LOAD, SAVE];
@@ -72,7 +75,27 @@ export default (engine, actionBlacklist = [], actionWhitelist = [], options = {}
         warnAboutConfusingFiltering(actionBlacklist, actionWhitelist);
     }
 
+    const myEmitter = new EventEmitter();
+
     return ({ dispatch, getState }) => {
+        fromEvent(myEmitter, 'save')
+            .pipe(
+                debounceTime(opts.debounce),
+            )
+            .subscribe(() => {
+                const saveState = getState();
+                const saveAction = actionSave(saveState);
+
+                const dispatchSave = () => dispatch(saveAction);
+                engine.save(saveState)
+                    .then(() => {
+                        if (opts.disableDispatchSaveAction === false) {
+                            return dispatchSave();
+                        }
+                    })
+                    .catch(swallow);
+            });
+
         return (next) => (action) => {
             const result = next(action);
 
@@ -85,24 +108,7 @@ export default (engine, actionBlacklist = [], actionWhitelist = [], options = {}
 
             // Skip blacklisted actions
             if (!isOnBlacklist && isOnWhitelist) {
-                const saveState = getState();
-                const saveAction = actionSave(saveState);
-
-                if (process.env.NODE_ENV !== 'production') {
-                    if (!saveAction.meta) {
-                        saveAction.meta = {};
-                    }
-                    saveAction.meta.origin = action;
-                }
-
-                const dispatchSave = () => dispatch(saveAction);
-                engine.save(saveState)
-                    .then(() => {
-                        if (opts.disableDispatchSaveAction === false) {
-                            return dispatchSave();
-                        }
-                    })
-                    .catch(swallow);
+                myEmitter.emit('save', result);
             }
 
             return result;
