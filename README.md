@@ -1,3 +1,7 @@
+This repo take from react-stack/redux-storage, but plus debounce time for performance boost using RxJS
+When call createMiddleware with options { debounce: 500 } for 500ms delay
+see https://rxjs-dev.firebaseapp.com/api/operators/debounceTime for detail
+
 # [redux-storage][]
 
 [![build](https://travis-ci.org/guns2410/redux-storage.svg?branch=master)](https://travis-ci.org/react-stack/redux-storage)
